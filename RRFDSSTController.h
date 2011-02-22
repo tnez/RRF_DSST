@@ -21,7 +21,40 @@
 
   // ADDITIONAL MEMBERS ////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////
-    
+  DSSTPattern * pattern1;
+	DSSTPattern * pattern2;
+	DSSTPattern * pattern3;
+	DSSTPattern * pattern4;
+	DSSTPattern * pattern5;
+	DSSTPattern * pattern6;
+	DSSTPattern * pattern7;
+	DSSTPattern * pattern8;
+	DSSTPattern * pattern9;
+	DSSTPattern * userPattern;
+	NSTextField * userChallengeLabel;
+	NSTextField * pointsLabel;
+	NSInteger currentChallenge;
+	NSInteger currentRow;
+	NSInteger numberOfPoints;
+	NSInteger totalNumberOfTrials;
+	BOOL currentTrialIsStillValid;
+	TKTimer * appTimer;
+	NSUInteger clearSeconds;
+	NSUInteger clearMicroSeconds;
+	NSInteger numberOfTrialsSinceLastReset;
+	NSInteger resetLimit;
+	NSString * subjectID;
+	NSString * studyDay;
+	BOOL waitingToClear;
+	NSNumber * currentRunHeaderOffset;
+	NSString * fileName;
+	NSString * crashRecoveryFileName;
+	NSUInteger totalAppSeconds;
+	NSUInteger totalAppMicroseconds;
+	NSUInteger crashRecoverySeconds;
+	NSUInteger crashRecoveryMicroseconds;
+	NSUInteger runNumber;
+	NSString * dataDirectory;  
 }
 
 // PROTOCOL PROPERTIES /////////////////////////////////////////////////////////
@@ -33,6 +66,38 @@
 
 // ADDITIONAL PROPERTIES ///////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
+@property(readwrite) NSUInteger crashRecoverySeconds;
+@property(readwrite) NSUInteger crashRecoveryMicroseconds;
+@property(readwrite) NSUInteger totalAppMicroseconds;
+@property(readwrite) NSUInteger totalAppSeconds;
+@property(readwrite) BOOL waitingToClear;
+@property(readwrite) NSInteger totalNumberOfTrials;
+@property(readwrite) NSUInteger clearSeconds;
+@property(readwrite) NSUInteger clearMicroSeconds;
+@property(readwrite) NSInteger numberOfPoints;
+@property(readwrite) NSInteger numberOfTrialsSinceLastReset;
+@property(readwrite) NSInteger resetLimit;
+@property(nonatomic,retain) NSString * crashRecoveryFileName;
+@property(nonatomic,retain) NSNumber * currentRunHeaderOffset;
+@property(nonatomic,retain) TKTimer * appTimer;
+@property(nonatomic,retain) NSString * subjectID;
+@property(nonatomic,retain) NSString * studyDay;
+@property(nonatomic,retain) IBOutlet DSSTPattern * pattern1;
+@property(nonatomic,retain) IBOutlet DSSTPattern * pattern2;
+@property(nonatomic,retain) IBOutlet DSSTPattern * pattern3;
+@property(nonatomic,retain) IBOutlet DSSTPattern * pattern4;
+@property(nonatomic,retain) IBOutlet DSSTPattern * pattern5;
+@property(nonatomic,retain) IBOutlet DSSTPattern * pattern6;
+@property(nonatomic,retain) IBOutlet DSSTPattern * pattern7;
+@property(nonatomic,retain) IBOutlet DSSTPattern * pattern8;
+@property(nonatomic,retain) IBOutlet DSSTPattern * pattern9;
+@property(nonatomic,retain) IBOutlet DSSTPattern * userPattern;
+@property(nonatomic,retain) IBOutlet NSWindow * theWindow;
+@property(nonatomic,retain) IBOutlet NSTextField * userChallengeLabel;
+@property(nonatomic,retain) IBOutlet NSTextField * pointsLabel;	
+@property(readwrite)NSInteger currentChallenge;
+@property(readwrite)NSInteger currentRow;
+@property(readwrite) BOOL currentTrialIsStillValid;
 
 #pragma mark REQUIRED PROTOCOL METHODS
 /**
@@ -131,6 +196,23 @@
  Add the error to an ongoing error log
  */
 - (void)registerError: (NSString *)theError;
+// begin: Scott's methods
+-(BOOL)validPatternLayout;
+-(void)userDidInputCharacters:(NSString*)characters;
+-(DSSTPattern *)currentChallengePattern;
+-(void)clearUserPattern:(NSNotification *)aNotification;
+-(void)delayedClear;
+-(void)startAppTimer;
+-(void)exitWithNotification:(NSNotification *) aNotification;
+-(void)logString:(NSString *)string;
+-(void)regeneratePatterns;
+-(void)readStartupInfo;
+-(void)terminate;
+-(void)logPatterns;
+-(void)updateRunHeader;
+-(BOOL)attemptCrashRecovery;
+-(BOOL)setupNewRun;
+// end: Scott's methods
 
 #pragma mark Preference Keys
 // HERE YOU DEFINE KEY REFERENCES FOR ANY PREFERENCE VALUES

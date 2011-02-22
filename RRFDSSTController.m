@@ -2,7 +2,7 @@
 //  RRFDSSTController.m
 //  RRFDSST
 //  ----------------------------------------------------------------------------
-//  Author: Travis Nesland
+//  Author: Scott Southerland (ported by Travis Nesland)
 //  Created: 2/22/11
 //  Copyright 2011, Residential Research Facility,
 //  University of Kentucky. All Rights Reserved.
@@ -14,6 +14,33 @@
 @implementation RRFDSSTController
 @synthesize delegate,definition,errorLog,view;  // add any member that has a 
                                                 //property
+@synthesize pattern1;
+@synthesize pattern2;
+@synthesize pattern3;
+@synthesize pattern4;
+@synthesize pattern5;
+@synthesize pattern6;
+@synthesize pattern7;
+@synthesize pattern8;
+@synthesize pattern9;
+@synthesize userPattern;
+@synthesize userChallengeLabel;
+@synthesize pointsLabel;
+@synthesize currentChallenge;
+@synthesize currentRow;
+@synthesize currentTrialIsStillValid;
+@synthesize numberOfPoints;
+@synthesize clearSeconds;
+@synthesize clearMicroSeconds;
+@synthesize numberOfTrialsSinceLastReset;
+@synthesize resetLimit;
+@synthesize totalNumberOfTrials;
+@synthesize waitingToClear;
+@synthesize currentRunHeaderOffset;
+@synthesize totalAppSeconds;
+@synthesize totalAppMicroseconds;
+@synthesize crashRecoverySeconds;
+@synthesize crashRecoveryMicroseconds;
 
 #pragma mark HOUSEKEEPING METHODS
 /**
@@ -103,11 +130,20 @@
   [self setErrorLog:@""]; // clear the error log
   // WHAT NEEDS TO BE INITIALIZED BEFORE THIS COMPONENT CAN OPERATE?
   // ...
+  waitingToClear = YES;
+  numberOfPoints = 0;
+  totalNumberOfTrials = 0;
+  resetLimit = 25;
+  totalAppSeconds = 120; // TODO: paramaterize totalAppSeconds
+  totalAppMicroseconds = 0;
+  [[NSNotificationCenter defaultCenter] addObserver:@selector(clearUserPattern:) name:@"clearUserPattern" object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:@selector(exitWithNotification:) selector:@"exitWithNotification" object:nil];
   // LOAD NIB
   // ...
   if([NSBundle loadNibNamed:RRFDSSTMainNibNameKey owner:self]) {
     // SETUP THE INTERFACE VALUES
     // ...
+    
   } else {
     // nib did not load, so throw error
     [self registerError:@"Could not load Nib file"];
