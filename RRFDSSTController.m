@@ -131,6 +131,7 @@
   // WHAT NEEDS TO BE INITIALIZED BEFORE THIS COMPONENT CAN OPERATE?
   // ...
   waitingToClear = YES;
+  currentRow = 3;
   numberOfPoints = 0;
   totalNumberOfTrials = 0;
   resetLimit = 25;
@@ -154,6 +155,7 @@
  Return YES if component should perform recovery actions
  */
 - (BOOL)shouldRecover {
+  //TODO: return yes if our recovery plist exists
   return NO;  // this is the default; change if needed
 }
 
