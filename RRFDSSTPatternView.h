@@ -7,9 +7,10 @@
 //
 
 #import <Cocoa/Cocoa.h>
+@class RRFDSSTController;
 
-
-@interface DSSTPatternView : NSView {
+@interface RRFDSSTPatternView : NSView {
+  RRFDSSTController *taskController;
 	NSColorWell *position1;
 	NSColorWell *position2;
 	NSColorWell *position3;
@@ -20,14 +21,15 @@
 	NSColorWell *position8;
 	NSColorWell *position9;
 }
-@property(nonatomic,retain) IBOutlet NSColorWell * position1;
-@property(nonatomic,retain) IBOutlet NSColorWell * position2;
-@property(nonatomic,retain) IBOutlet NSColorWell * position3;
-@property(nonatomic,retain) IBOutlet NSColorWell * position4;
-@property(nonatomic,retain) IBOutlet NSColorWell * position5;
-@property(nonatomic,retain) IBOutlet NSColorWell * position6;
-@property(nonatomic,retain) IBOutlet NSColorWell * position7;
-@property(nonatomic,retain) IBOutlet NSColorWell * position8;
-@property(nonatomic,retain) IBOutlet NSColorWell * position9;
+@property(assign) IBOutlet RRFDSSTController *taskController;
+@property(assign) IBOutlet NSColorWell * position1;
+@property(assign) IBOutlet NSColorWell * position2;
+@property(assign) IBOutlet NSColorWell * position3;
+@property(assign) IBOutlet NSColorWell * position4;
+@property(assign) IBOutlet NSColorWell * position5;
+@property(assign) IBOutlet NSColorWell * position6;
+@property(assign) IBOutlet NSColorWell * position7;
+@property(assign) IBOutlet NSColorWell * position8;
+@property(assign) IBOutlet NSColorWell * position9;
 
 @end

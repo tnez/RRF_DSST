@@ -46,6 +46,42 @@
 			<key>help</key>
 			<string>Directory where component will save data file - Initial value is set to session global</string>
 		</dict>
+		<dict>
+			<key>optionIdentifier</key>
+			<string>RRFDSSTDuration</string>
+			<key>displayName</key>
+			<string>Task Duration</string>
+			<key>type</key>
+			<integer>1</integer>
+			<key>default</key>
+			<integer>120</integer>
+			<key>min</key>
+			<integer>1</integer>
+			<key>allowsEdit</key>
+			<true/>
+			<key>allowsNull</key>
+			<false/>
+			<key>help</key>
+			<string>The target duration for this task in seconds</string>
+		</dict>
+		<dict>
+			<key>optionIdentifier</key>
+			<string>RRFDSSTResetLimit</string>
+			<key>displayName</key>
+			<string>Reset Limit</string>
+			<key>type</key>
+			<integer>1</integer>
+			<key>default</key>
+			<integer>25</integer>
+			<key>min</key>
+			<integer>1</integer>
+			<key>allowsEdit</key>
+			<true/>
+			<key>allowsNull</key>
+			<false/>
+			<key>help</key>
+			<string>The number of trials after which new patterns should be generated</string>
+		</dict>
 	</array>
 </dict>
 </plist>

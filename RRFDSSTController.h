@@ -9,28 +9,29 @@
 ////////////////////////////////////////////////////////////////////////////////
 #import <Cocoa/Cocoa.h>
 #import <TKUtility/TKUtility.h>
+@class RRFDSSTPattern;
 
 @interface RRFDSSTController : NSObject <TKComponentBundleLoading> {
 
   // PROTOCOL MEMBERS //////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////    
   NSDictionary                                                *definition;
-  id                                                          delegate;
+  TKComponentController                                       *delegate;
   NSString                                                    *errorLog;
   IBOutlet NSView                                             *view;
 
   // ADDITIONAL MEMBERS ////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////
-  DSSTPattern * pattern1;
-	DSSTPattern * pattern2;
-	DSSTPattern * pattern3;
-	DSSTPattern * pattern4;
-	DSSTPattern * pattern5;
-	DSSTPattern * pattern6;
-	DSSTPattern * pattern7;
-	DSSTPattern * pattern8;
-	DSSTPattern * pattern9;
-	DSSTPattern * userPattern;
+  RRFDSSTPattern * pattern1;
+	RRFDSSTPattern * pattern2;
+	RRFDSSTPattern * pattern3;
+	RRFDSSTPattern * pattern4;
+	RRFDSSTPattern * pattern5;
+	RRFDSSTPattern * pattern6;
+	RRFDSSTPattern * pattern7;
+	RRFDSSTPattern * pattern8;
+	RRFDSSTPattern * pattern9;
+	RRFDSSTPattern * userPattern;
 	NSTextField * userChallengeLabel;
 	NSTextField * pointsLabel;
 	NSInteger currentChallenge;
@@ -38,29 +39,22 @@
 	NSInteger numberOfPoints;
 	NSInteger totalNumberOfTrials;
 	BOOL currentTrialIsStillValid;
-	TKTimer * appTimer;
 	NSUInteger clearSeconds;
 	NSUInteger clearMicroSeconds;
 	NSInteger numberOfTrialsSinceLastReset;
 	NSInteger resetLimit;
-	NSString * subjectID;
-	NSString * studyDay;
 	BOOL waitingToClear;
-	NSNumber * currentRunHeaderOffset;
-	NSString * fileName;
-	NSString * crashRecoveryFileName;
 	NSUInteger totalAppSeconds;
 	NSUInteger totalAppMicroseconds;
 	NSUInteger crashRecoverySeconds;
 	NSUInteger crashRecoveryMicroseconds;
-	NSUInteger runNumber;
-	NSString * dataDirectory;  
+  TKTime start;
 }
 
 // PROTOCOL PROPERTIES /////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 @property (assign)              NSDictionary                    *definition;
-@property (assign)              id <TKComponentBundleLoading>   delegate;
+@property (assign)              TKComponentController           *delegate;
 @property (nonatomic, retain)   NSString                        *errorLog;
 @property (assign)              IBOutlet NSView                 *view;
 
@@ -77,24 +71,18 @@
 @property(readwrite) NSInteger numberOfPoints;
 @property(readwrite) NSInteger numberOfTrialsSinceLastReset;
 @property(readwrite) NSInteger resetLimit;
-@property(nonatomic,retain) NSString * crashRecoveryFileName;
-@property(nonatomic,retain) NSNumber * currentRunHeaderOffset;
-@property(nonatomic,retain) TKTimer * appTimer;
-@property(nonatomic,retain) NSString * subjectID;
-@property(nonatomic,retain) NSString * studyDay;
-@property(nonatomic,retain) IBOutlet DSSTPattern * pattern1;
-@property(nonatomic,retain) IBOutlet DSSTPattern * pattern2;
-@property(nonatomic,retain) IBOutlet DSSTPattern * pattern3;
-@property(nonatomic,retain) IBOutlet DSSTPattern * pattern4;
-@property(nonatomic,retain) IBOutlet DSSTPattern * pattern5;
-@property(nonatomic,retain) IBOutlet DSSTPattern * pattern6;
-@property(nonatomic,retain) IBOutlet DSSTPattern * pattern7;
-@property(nonatomic,retain) IBOutlet DSSTPattern * pattern8;
-@property(nonatomic,retain) IBOutlet DSSTPattern * pattern9;
-@property(nonatomic,retain) IBOutlet DSSTPattern * userPattern;
-@property(nonatomic,retain) IBOutlet NSWindow * theWindow;
-@property(nonatomic,retain) IBOutlet NSTextField * userChallengeLabel;
-@property(nonatomic,retain) IBOutlet NSTextField * pointsLabel;	
+@property(assign) IBOutlet RRFDSSTPattern * pattern1;
+@property(assign) IBOutlet RRFDSSTPattern * pattern2;
+@property(assign) IBOutlet RRFDSSTPattern * pattern3;
+@property(assign) IBOutlet RRFDSSTPattern * pattern4;
+@property(assign) IBOutlet RRFDSSTPattern * pattern5;
+@property(assign) IBOutlet RRFDSSTPattern * pattern6;
+@property(assign) IBOutlet RRFDSSTPattern * pattern7;
+@property(assign) IBOutlet RRFDSSTPattern * pattern8;
+@property(assign) IBOutlet RRFDSSTPattern * pattern9;
+@property(assign) IBOutlet RRFDSSTPattern * userPattern;
+@property(assign) IBOutlet NSTextField * userChallengeLabel;
+@property(assign) IBOutlet NSTextField * pointsLabel;	
 @property(readwrite)NSInteger currentChallenge;
 @property(readwrite)NSInteger currentRow;
 @property(readwrite) BOOL currentTrialIsStillValid;
@@ -143,7 +131,7 @@
  assign itself as the delegate
  Note: The new delegate must adopt the TKComponentBundleDelegate protocol
  */
-- (void)setDelegate: (id <TKComponentBundleDelegate> )aDelegate;
+- (void)setDelegate: (TKComponentController *)aDelegate;
 
 /**
  Perform any and all initialization required by component - load any nib files
@@ -195,23 +183,20 @@
 /**
  Add the error to an ongoing error log
  */
+- (void)dequeueTempLogEntries;
 - (void)registerError: (NSString *)theError;
 // begin: Scott's methods
--(BOOL)validPatternLayout;
--(void)userDidInputCharacters:(NSString*)characters;
--(DSSTPattern *)currentChallengePattern;
--(void)clearUserPattern:(NSNotification *)aNotification;
--(void)delayedClear;
--(void)startAppTimer;
--(void)exitWithNotification:(NSNotification *) aNotification;
--(void)logString:(NSString *)string;
--(void)regeneratePatterns;
--(void)readStartupInfo;
--(void)terminate;
--(void)logPatterns;
--(void)updateRunHeader;
--(BOOL)attemptCrashRecovery;
--(BOOL)setupNewRun;
+- (void)clearUserPattern:(NSNotification *)aNotification;
+- (RRFDSSTPattern *)currentChallengePattern;
+- (void)delayedClear;
+- (void)exitWithNotification: (NSNotification *)aNote;
+- (void)logPatterns;                             // --->
+- (void)regeneratePatterns;                      // ---> begin,
+- (void)startAppTimer;
+- (void)startClearTimer;
+- (void)userDidInputCharacters:(NSString*)characters;
+- (void)updateRunHeader;                         // --->
+- (BOOL)validPatternLayout;
 // end: Scott's methods
 
 #pragma mark Preference Keys
@@ -220,10 +205,20 @@
 ////////////////////////////////////////////////////////////////////////////////
 NSString * const RRFDSSTTaskNameKey;
 NSString * const RRFDSSTDataDirectoryKey;
+NSString * const RRFDSSTTaskDurationKey;
+NSString * const RRFDSSTResetLimitKey;
+
+#pragma mark Registry Keys
+NSString * const RRFDSSTLastKnownTimeKey;
+NSString * const RRFDSSTLastPatternKey;
+NSString * const RRFDSSTTrialsCorrectCountKey;
+NSString * const RRFDSSTTrialsCorrectPercentageKey;
+NSString * const RRFDSSTTrialsCountKey;
 
 #pragma mark Internal Strings
 // HERE YOU DEFINE KEYS FOR CONSTANT STRINGS
 ////////////////////////////////////////////////////////////////////////////////
+NSString * const RRFDSSTLogSinceLastRecPointKey;
 NSString * const RRFDSSTMainNibNameKey;
 
 #pragma mark Enumerated Values

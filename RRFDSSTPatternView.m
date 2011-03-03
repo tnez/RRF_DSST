@@ -6,10 +6,11 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
-#import "DSSTPatternView.h"
-#import "DSSTAppController.h"
+#import "RRFDSSTPatternView.h"
+#import "RRFDSSTController.h"
 
-@implementation DSSTPatternView
+@implementation RRFDSSTPatternView
+@synthesize taskController;
 @synthesize position1;
 @synthesize position2;
 @synthesize position3;
@@ -35,7 +36,7 @@
 -(void)keyDown:(NSEvent *)event{
   
 	if(![[event characters] isEqualToString:@""]&&![event isARepeat]){
-		[[DSSTAppController sharedAppController] userDidInputCharacters:[event characters]] ;
+		[taskController userDidInputCharacters:[event characters]] ;
 	}
   
 }

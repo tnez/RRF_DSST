@@ -6,10 +6,11 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
-#import "DSSTPattern.h"
+#import "RRFDSSTPattern.h"
+#import "RRFDSSTPatternView.h"
 
 
-@implementation DSSTPattern
+@implementation RRFDSSTPattern
 @synthesize patternView;
 
 -(id)init{
@@ -35,7 +36,7 @@
 	patternPositions[row2]=1;
 	patternPositions[row3]=1;
 }
--(BOOL)equalsPattern:(DSSTPattern *)pattern{
+-(BOOL)equalsPattern:(RRFDSSTPattern *)pattern{
 	int i=0;
 	for(i=0;i<9;i++){
 		if([self getPatternPositionValueAtIndex:i]!=[pattern getPatternPositionValueAtIndex:i]){
@@ -60,7 +61,7 @@
 }
 
 -(void)updateView{
-	DSSTPatternView * theView=[self patternView];
+	RRFDSSTPatternView * theView=[self patternView];
 	[[theView position1] setColor:(patternPositions[0]?[NSColor blackColor]:[NSColor whiteColor])];
 	[[theView position2] setColor:(patternPositions[1]?[NSColor blackColor]:[NSColor whiteColor])];
 	[[theView position3] setColor:(patternPositions[2]?[NSColor blackColor]:[NSColor whiteColor])];

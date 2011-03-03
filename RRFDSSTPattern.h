@@ -7,16 +7,16 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "DSSTPatternView.h"
+@class RRFDSSTPatternView;
 
-@interface DSSTPattern : NSObject {
+@interface RRFDSSTPattern : NSObject {
 	int patternPositions[9];
-	DSSTPatternView * patternView;
+	RRFDSSTPatternView * patternView;
 }
-@property(nonatomic,retain) IBOutlet DSSTPatternView * patternView;
+@property(nonatomic,retain) IBOutlet RRFDSSTPatternView * patternView;
 
 -(void)generateRandomValidPattern;
--(BOOL)equalsPattern:(DSSTPattern *)pattern;
+-(BOOL)equalsPattern:(RRFDSSTPattern *)pattern;
 -(int)getPatternPositionValueAtIndex:(int)i;
 -(void)updateView;
 -(void)setPatternPositionValueAtIndex:(int)i toValue:(int)value;
