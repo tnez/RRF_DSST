@@ -125,7 +125,7 @@
  assign itself as the delegate
  Note: The new delegate must adopt the TKComponentBundleDelegate protocol
  */
-- (void)setDelegate: (TKComponentController *)aDelegate {
+- (void)setDelegate: (id <TKComponentBundleDelegate>)aDelegate {
   delegate = aDelegate;
 }
 
@@ -299,6 +299,7 @@
   DLog(@"Message Received");  
   [[view window] makeFirstResponder:nil]; // stop accepting responses
   [self dequeueTempLogEntries];           // grab any queued log entries
+  [self updateRegistryFile];
   [delegate componentDidFinish:self];     // notify component (we have finished)
 }
 
@@ -318,20 +319,7 @@
                [pattern9 stringValue]);
   // let's log nesc recovery info at each pattern reset...
   // this will be our recovery point if needed
-  NSArray *aPatterns = [NSArray arrayWithObjects:[pattern1 stringValue],
-                        [pattern2 stringValue],
-                        [pattern3 stringValue],
-                        [pattern4 stringValue],
-                        [pattern5 stringValue],
-                        [pattern6 stringValue],
-                        [pattern7 stringValue],
-                        [pattern8 stringValue],
-                        [pattern9 stringValue],nil];
-//  TODO: enable registry testing in Mock Application
-//  [delegate setValue:aPatterns forRunRegistryKey:RRFDSSTLastPatternKey];
-//  [delegate setValue:[NSDate date] forRunRegistryKey:RRFDSSTLastKnownTimeKey];
-//  [delegate setValue:[NSNumber numberWithInteger:numberOfPoints] forKey:RRFDSSTTrialsCorrectCountKey];
-//  [delegate setValue:[NSNumber numberWithInteger:totalNumberOfTrials] forKey:RRFDSSTTrialsCountKey];
+  [self updateRegistryFile];
 }
 
 -(void)regeneratePatterns{
@@ -367,7 +355,7 @@
   // start app timer
 	NSNotification * exitWithNotification =[NSNotification notificationWithName:@"exitWithNotification" object:self];
   // register notification w/ the timer
-	[[delegate timer] registerEventWithNotification:exitWithNotification inSeconds:totalAppSeconds microSeconds:totalAppMicroseconds];    
+	[[(TKComponentController *)delegate timer] registerEventWithNotification:exitWithNotification inSeconds:totalAppSeconds microSeconds:totalAppMicroseconds];    
   // grab start timer for use in latency calcs
   start = current_time_marker();
 }
@@ -376,7 +364,23 @@
 	NSNotification * clearUserPattern=[NSNotification notificationWithName:@"clearUserPattern" object:self];
 	// 0.1 Seconds or 100 milliseconds
 	NSUInteger microSecondsTilClear=(1000*100);
-	[[delegate timer] registerEventWithNotification:clearUserPattern inSeconds:(NSUInteger)0 microSeconds:(NSUInteger)microSecondsTilClear];
+	[[(TKComponentController *)delegate timer] registerEventWithNotification:clearUserPattern inSeconds:(NSUInteger)0 microSeconds:(NSUInteger)microSecondsTilClear];
+}
+
+- (void)updateRegistryFile {
+  NSArray *aPatterns = [NSArray arrayWithObjects:[pattern1 stringValue],
+                        [pattern2 stringValue],
+                        [pattern3 stringValue],
+                        [pattern4 stringValue],
+                        [pattern5 stringValue],
+                        [pattern6 stringValue],
+                        [pattern7 stringValue],
+                        [pattern8 stringValue],
+                        [pattern9 stringValue],nil];
+  [delegate setValue:aPatterns forRunRegistryKey:RRFDSSTLastPatternKey];
+  [delegate setValue:[NSDate date] forRunRegistryKey:RRFDSSTLastKnownTimeKey];
+  [delegate setValue:[NSNumber numberWithInteger:numberOfPoints] forRunRegistryKey:RRFDSSTTrialsCorrectCountKey];
+  [delegate setValue:[NSNumber numberWithInteger:totalNumberOfTrials] forRunRegistryKey:RRFDSSTTrialsCountKey];
 }
 
 -(void) updateRunHeader{

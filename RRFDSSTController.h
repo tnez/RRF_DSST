@@ -16,7 +16,7 @@
   // PROTOCOL MEMBERS //////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////    
   NSDictionary                                                *definition;
-  TKComponentController                                       *delegate;
+  id <TKComponentBundleDelegate>                              delegate;
   NSString                                                    *errorLog;
   IBOutlet NSView                                             *view;
 
@@ -54,7 +54,7 @@
 // PROTOCOL PROPERTIES /////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 @property (assign)              NSDictionary                    *definition;
-@property (assign)              TKComponentController           *delegate;
+@property (assign)              id <TKComponentBundleDelegate>  delegate;
 @property (nonatomic, retain)   NSString                        *errorLog;
 @property (assign)              IBOutlet NSView                 *view;
 
@@ -131,7 +131,7 @@
  assign itself as the delegate
  Note: The new delegate must adopt the TKComponentBundleDelegate protocol
  */
-- (void)setDelegate: (TKComponentController *)aDelegate;
+- (void)setDelegate: (id <TKComponentBundleDelegate>)aDelegate;
 
 /**
  Perform any and all initialization required by component - load any nib files
@@ -185,19 +185,18 @@
  */
 - (void)dequeueTempLogEntries;
 - (void)registerError: (NSString *)theError;
-// begin: Scott's methods
 - (void)clearUserPattern:(NSNotification *)aNotification;
 - (RRFDSSTPattern *)currentChallengePattern;
 - (void)delayedClear;
 - (void)exitWithNotification: (NSNotification *)aNote;
-- (void)logPatterns;                             // --->
-- (void)regeneratePatterns;                      // ---> begin,
+- (void)logPatterns;
+- (void)regeneratePatterns;
 - (void)startAppTimer;
 - (void)startClearTimer;
 - (void)userDidInputCharacters:(NSString*)characters;
-- (void)updateRunHeader;                         // --->
+- (void)updateRegistryFile;
+- (void)updateRunHeader;
 - (BOOL)validPatternLayout;
-// end: Scott's methods
 
 #pragma mark Preference Keys
 // HERE YOU DEFINE KEY REFERENCES FOR ANY PREFERENCE VALUES
