@@ -108,9 +108,19 @@
  as string
  */
 - (void)recover {
-  // remove queued log entries
-  [[NSFileManager defaultManager] removeItemAtPath:[[delegate tempDirectory] stringByAppendingPathComponent:RRFDSSTLogSinceLastRecPointKey] error:nil];
-  // TODO: get time and whozits
+  DLog(@"Attempting to recover from crash");
+  NSFileManager *fm = [NSFileManager defaultManager];
+  // remove temp datafile (if exists)
+  [fm removeItemAtPath:RRFPathToTempFile([delegate defaultTempFile]) error:nil];
+  // remove queued log entries (if exists)
+  [fm removeItemAtPath:RRFPathToTempFile(RRFDSSTLogSinceLastRecPointKey) error:nil];
+  // clear out last run data from regfile
+  [delegate setValue:nil forRunRegistryKey:RRFDSSTTrialsCountKey];
+  [delegate setValue:nil forRunRegistryKey:RRFDSSTTrialsCorrectCountKey];
+  [delegate setValue:nil forRunRegistryKey:RRFDSSTLastPatternKey];
+  [delegate setValue:nil forRunRegistryKey:RRFDSSTLastKnownTimeKey];
+  [delegate setValue:[NSDate date] forRunRegistryKey:@"start"];
+  [self setup];
 }
 
 /**
