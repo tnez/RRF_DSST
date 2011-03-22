@@ -16,7 +16,7 @@
   // PROTOCOL MEMBERS //////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////    
   NSDictionary                                                *definition;
-  id <TKComponentBundleDelegate>                              delegate;
+  TKComponentController                                       *delegate;
   NSString                                                    *errorLog;
   IBOutlet NSView                                             *view;
 
@@ -54,7 +54,7 @@
 // PROTOCOL PROPERTIES /////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 @property (assign)              NSDictionary                    *definition;
-@property (assign)              id <TKComponentBundleDelegate>  delegate;
+@property (assign)              TKComponentController           *delegate;
 @property (nonatomic, retain)   NSString                        *errorLog;
 @property (assign)              IBOutlet NSView                 *view;
 
@@ -131,7 +131,7 @@
  assign itself as the delegate
  Note: The new delegate must adopt the TKComponentBundleDelegate protocol
  */
-- (void)setDelegate: (id <TKComponentBundleDelegate>)aDelegate;
+- (void)setDelegate: (TKComponentController *)aDelegate;
 
 /**
  Perform any and all initialization required by component - load any nib files

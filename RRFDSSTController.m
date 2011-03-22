@@ -135,7 +135,7 @@
  assign itself as the delegate
  Note: The new delegate must adopt the TKComponentBundleDelegate protocol
  */
-- (void)setDelegate: (id <TKComponentBundleDelegate>)aDelegate {
+- (void)setDelegate: (TKComponentController *)aDelegate {
   delegate = aDelegate;
 }
 
@@ -227,9 +227,17 @@
 /**
  Summary data if desired
  */
-//- (NSString *)summary {
-//
-//}
+- (NSString *)summary {
+  return [NSString stringWithFormat:@"Run:\t%03d\tTotal Trials:\t%10d\t# Correct:\t%10d\t# Incorrect:\t%10d\tPercentage Correct:\t%06.2f%%\n",[delegate runCount],[self totalNumberOfTrials],[self numberOfPoints],[self totalNumberOfTrials]-[self numberOfPoints],(totalNumberOfTrials>0?(float)((float)100*[self numberOfPoints])/((float)[self totalNumberOfTrials]):0)];
+}
+
+- (NSUInteger)summaryOffset {
+  // for an overwritting summary, un-comment the following line
+  // return [[[delegate registryForTaskWithOffset:0] valueForKey:TKComponentSummaryStartKey] unsignedIntegerValue];
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // for an appending summary, un-comment the following line
+  return [[[delegate registryForTaskWithOffset:0] valueForKey:TKComponentSummaryEndKey] unsignedIntegerValue];
+}
         
 #pragma mark ADDITIONAL METHODS
 /** Add additional methods required for operation */

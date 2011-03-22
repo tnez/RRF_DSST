@@ -30,6 +30,7 @@
 		404B5F2D12524A5600437416 /* RRFDSSTManifest.plist in Resources */ = {isa = PBXBuildFile; fileRef = 404B5F2C12524A5600437416 /* RRFDSSTManifest.plist */; };
 		404B5F2E12524A5600437416 /* RRFDSSTManifest.plist in Resources */ = {isa = PBXBuildFile; fileRef = 404B5F2C12524A5600437416 /* RRFDSSTManifest.plist */; };
 		4063B2B512551F490096BFE1 /* RRFDSST.bundle in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8D5B49B6048680CD000E48DA /* RRFDSST.bundle */; };
+		40D5EEBA133938E00009FD87 /* RRFDSST.bundle in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8D5B49B6048680CD000E48DA /* RRFDSST.bundle */; };
 		40E93D59131425B000337C0B /* RRFDSSTPattern.m in Sources */ = {isa = PBXBuildFile; fileRef = 40E93D58131425B000337C0B /* RRFDSSTPattern.m */; };
 		40E93D5A131425B000337C0B /* RRFDSSTPattern.m in Sources */ = {isa = PBXBuildFile; fileRef = 40E93D58131425B000337C0B /* RRFDSSTPattern.m */; };
 		40E93D5F1314263700337C0B /* RRFDSSTPatternView.m in Sources */ = {isa = PBXBuildFile; fileRef = 40E93D5E1314263700337C0B /* RRFDSSTPatternView.m */; };
@@ -66,6 +67,16 @@
 			dstSubfolderSpec = 13;
 			files = (
 				4063B2B512551F490096BFE1 /* RRFDSST.bundle in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		40D5EEC5133938F40009FD87 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "~/Documents/development/rrf/PLUGINS";
+			dstSubfolderSpec = 0;
+			files = (
+				40D5EEBA133938E00009FD87 /* RRFDSST.bundle in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -288,6 +299,7 @@
 				8D5B49B1048680CD000E48DA /* Sources */,
 				8D5B49B3048680CD000E48DA /* Frameworks */,
 				8D5B49AF048680CD000E48DA /* Resources */,
+				40D5EEC5133938F40009FD87 /* CopyFiles */,
 			);
 			buildRules = (
 			);
