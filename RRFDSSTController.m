@@ -228,7 +228,9 @@
  Summary data if desired
  */
 - (NSString *)summary {
-  return [NSString stringWithFormat:@"Run:\t%03d\tTotal Trials:\t%10d\t# Correct:\t%10d\t# Incorrect:\t%10d\tPercentage Correct:\t%06.2f%%\n",[delegate runCount],[self totalNumberOfTrials],[self numberOfPoints],[self totalNumberOfTrials]-[self numberOfPoints],(totalNumberOfTrials>0?(float)((float)100*[self numberOfPoints])/((float)[self totalNumberOfTrials]):0)];
+  NSString *_summary = [NSString stringWithFormat:@"Run:\t%03d\tTotal Trials:\t%10d\t# Correct:\t%10d\t# Incorrect:\t%10d\tPercentage Correct:\t%06.2f%%\n",[delegate runCount],[self totalNumberOfTrials],[self numberOfPoints],[self totalNumberOfTrials]-[self numberOfPoints],(totalNumberOfTrials>0?(float)((float)100*[self numberOfPoints])/((float)[self totalNumberOfTrials]):0)];
+  DLog(@"%@",_summary);
+  return _summary;
 }
 
 - (NSUInteger)summaryOffset {
