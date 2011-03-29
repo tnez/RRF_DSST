@@ -195,7 +195,6 @@
 - (void)startClearTimer;
 - (void)userDidInputCharacters:(NSString*)characters;
 - (void)updateRegistryFile;
-- (void)updateRunHeader;
 - (BOOL)validPatternLayout;
 
 #pragma mark Preference Keys

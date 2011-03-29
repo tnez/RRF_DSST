@@ -278,7 +278,6 @@
 		[[self userPattern] setPatternPositionValueAtIndex:i toValue:0];
 	}
 	[[self userPattern] updateView];
-	[self updateRunHeader];
 	//[self logString:[NSString stringWithFormat:@"\nPattern:\t%@\n",[[self currentChallengePattern] stringValue]]];
   RRFLogToFile(RRFDSSTLogSinceLastRecPointKey,@"\nPattern:\t%@",[[self currentChallengePattern] stringValue]);
 	waitingToClear=NO;
@@ -401,14 +400,6 @@
   [delegate setValue:[NSNumber numberWithInteger:totalNumberOfTrials] forRunRegistryKey:RRFDSSTTrialsCountKey];
 }
 
--(void) updateRunHeader{
-	//NSString * runHeaderString = [NSString stringWithFormat:@"Run:\t%03d\tTotal Trials:\t%10d\t# Correct:\t%10d\t# Incorrect:\t%10d\tPercentage Correct:\t%06.2f%%\n\n",[self runNumber],[self totalNumberOfTrials],[self numberOfPoints],[self totalNumberOfTrials]-[self numberOfPoints],(totalNumberOfTrials>0?(float)((float)100*[self numberOfPoints])/((float)[self totalNumberOfTrials]):0)];
-	//[[TKLogging mainLogger] queueLogMessage:[[TKLogging getCurrentAppDirectory] stringByAppendingPathComponent:dataDirectory] file:fileName contentsOfString:runHeaderString overWriteOnFirstWrite:NO withOffset:[self currentRunHeaderOffset]];
-	//[[TKLogging crashRecoveryLogger] queueLogMessage:[[TKLogging getCurrentAppDirectory] stringByAppendingPathComponent:dataDirectory] file:crashRecoveryFileName contentsOfString:runHeaderString overWriteOnFirstWrite:NO withOffset:[self currentRunHeaderOffset]];
-  DLog(@"This is where Scott was updating run header");
-  // if we want to recover to specific trial, we should update counts and time here...
-  // if instead we are going to recover to last reset, we do not need to do anything here
-}
 -(void)userDidInputCharacters:(NSString*)characters{
 	if(waitingToClear){
 		return;
