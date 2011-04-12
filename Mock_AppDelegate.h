@@ -13,27 +13,30 @@
 
 #define MANIFEST [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"RRFDSSTManifest" ofType:@"plist"]]
 
-
 @interface Mock_AppDelegate : NSObject {
-    /** setup material */
-    NSDictionary                                *manifest;
-    NSArray                                     *componentOptions;
-    IBOutlet TKSubject                          *subject;
-    TKComponentController                       *component;
-    NSMutableDictionary                         *registry;
-    NSString                                    *currentComponentID;
-    NSString                                    *pathToRegistryFile;
-    /** view boxes */
-    IBOutlet NSScrollView                       *leftView;
-    IBOutlet NSView                             *topRightView;
-    IBOutlet NSView                             *bottomRightView;
-    IBOutlet NSWindow                           *setupWindow;
-    IBOutlet NSWindow                           *sessionWindow;
-    TKComponentConfigurationView                *componentConfigView;
-    /** run products */
-    NSMutableDictionary                         *componentDefinition;
-    NSMutableArray                              *presentedOptions;
-    NSString                                    *errorLog;
+  
+  /** setup material */
+  NSDictionary                                *manifest;
+  NSArray                                     *componentOptions;
+  IBOutlet TKSubject                          *subject;
+  TKComponentController                       *component;
+  NSMutableDictionary                         *registry;
+  NSString                                    *currentComponentID;
+  NSString                                    *pathToRegistryFile;
+  
+  /** view boxes */
+  IBOutlet NSScrollView                       *leftView;
+  IBOutlet NSView                             *topRightView;
+  IBOutlet NSView                             *bottomRightView;
+  IBOutlet NSWindow                           *setupWindow;
+  IBOutlet NSWindow                           *sessionWindow;
+  TKComponentConfigurationView                *componentConfigView;
+
+  /** run products */
+  NSMutableDictionary                         *componentDefinition;
+  NSMutableArray                              *presentedOptions;
+  NSString                                    *errorLog;
+
 }
 
 @property (nonatomic, retain) NSDictionary          *manifest;
@@ -50,10 +53,10 @@
 
 #pragma mark ACTIONS
 - (IBAction)createDefinition: (id)sender;
+- (IBAction)preflight: (id)sender;
 - (IBAction)run: (id)sender;
 - (IBAction)runWithSample: (id)sender;
-- (IBAction)preflight: (id)sender;
-
+- (IBAction)saveDefinitionToDisk: (id)sender;
 
 #pragma mark SESSION POSING
 /**

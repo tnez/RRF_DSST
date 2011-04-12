@@ -16,6 +16,7 @@
 #import "TKComponentPathOption.h"
 #import "TKComponentEnumOption.h"
 #import "RRFDSSTController.h"
+@class TKSession;
 
 /**
  Macros for logging functions conditional upon debug vs. production
@@ -24,11 +25,10 @@
  */
 #define ELog(...) NSLog(@"%s %@",__PRETTY_FUNCTION__,[NSString stringWithFormat:__VA_ARGS__])
 #ifdef DEBUG 
-#define DLog(...) NSLog(@"%s %@",__PRETTY_FUNCTION__,[NSString stringWithFormat:__VA_ARGS__])
+  #define DLog(...) NSLog(@"%s %@",__PRETTY_FUNCTION__,[NSString stringWithFormat:__VA_ARGS__])
 #else
-#define DLog(...) do { } while(0)
+  #define DLog(...) do { } while(0)
 #endif
-
 
 @implementation Mock_AppDelegate
 
@@ -179,7 +179,7 @@
     // setup component
     [component setSubject:subject];
     [component setSessionWindow:sessionWindow];
-    [component setDelegate:self];
+    [component setDelegate:(TKSession *)self];
 
     // test
     [self setErrorLog:[component preflightAndReturnErrorAsString]];
@@ -192,23 +192,20 @@
     // create definition
     [self createDefinition:self];
     DLog(@"Comp Def: %@",componentDefinition);
-    
+
     // create component
     component = [[TKComponentController loadFromDefinition:componentDefinition] retain];
-    currentComponentID = [[componentDefinition valueForKey:@"RRFDSSTTaskName"] retain];
-
+    currentComponentID = [[componentDefinition valueForKey:@"RRFCRTTaskName"] retain];
+  
     // setup component
     [component setSubject:subject];
     [component setSessionWindow:sessionWindow];
-    [component setDelegate:self];
-    [[NSFileManager defaultManager] createDirectoryAtPath:[component tempDirectory]
-                              withIntermediateDirectories:YES
-                                               attributes:nil
-                                                    error:nil];
-
+    [component setDelegate:(TKSession *)self];
+    [[NSFileManager defaultManager] createDirectoryAtPath:[component tempDirectory] withIntermediateDirectories:YES attributes:nil error:nil];  
+  
     // setup registry file
     if([self initRegistryFile]) {
-          // add entry to component history
+      // add entry to component history
       [[registry valueForKey:RRFSessionHistoryKey] addObject:currentComponentID];
       // create new run entry for current task
       [[[self registryForTask:currentComponentID] valueForKey:RRFSessionRunKey] 
@@ -220,7 +217,7 @@
       [component release];component=nil;
       return;
     }
-
+  
     // begin component
     [component begin];
 
@@ -247,6 +244,29 @@
     }
 }
 
+- (IBAction)saveDefinitionToDisk: (id)sender
+{
+  // run a panel to select save location
+  NSSavePanel *panel = [NSSavePanel savePanel];
+  NSArray *fileTypes = [NSArray arrayWithObject:@"plist"];
+  [panel setAllowedFileTypes:fileTypes];
+  if([panel runModal])
+  {
+    DLog(@"We will save generated plist to disk");
+    [self createDefinition:self];
+    NSURL *_fileURL = [panel URL];
+    if(![componentDefinition writeToURL:_fileURL atomically:YES])
+    {
+      ELog(@"Could not write plist to disk");
+      [self setErrorLog:@"There was a problem writing the plist to disk"];
+    }
+  }
+  else
+  {
+    DLog(@"User did cancel save operation");
+  }
+}
+
 #pragma mark Notifications
 - (void)theComponentWillBegin: (NSNotification *)aNote {
 
@@ -256,7 +276,6 @@
 }
 - (void)theComponentDidBegin: (NSNotification *)aNote {
     DLog(@"The component did begin");
-
 }
 - (void)theComponentDidFinish: (NSNotification *)aNote {
     DLog(@"The component did finish");
@@ -264,14 +283,13 @@
     [self setValue:[NSDate date] forRunRegistryKey:@"end"];
     // move registry file to data directory
     NSString *destPath = [[component dataDirectory] stringByAppendingPathComponent:@"regfile.plist"];
-    [[NSFileManager defaultManager] moveItemAtPath:[pathToRegistryFile stringByStandardizingPath]
-                                            toPath:destPath
-                                             error:nil];
+    [[NSFileManager defaultManager] moveItemAtPath:[pathToRegistryFile stringByStandardizingPath] toPath:destPath error:nil];
+    // close component and release component
     [[TKLibrary sharedLibrary] exitFullScreenWithWindow:sessionWindow];
     [component release]; component = nil;
 }
 
-#pragma mark SESSION POSING
+#pragma mark Session Posing
 - (NSDictionary *)registryForTask: (NSString *)taskID {
   NSDictionary * retValue = nil;
   @try {
@@ -395,10 +413,10 @@
     [registry valueForKey:RRFSessionComponentsKey];
     // task ID and a nested runs mutable dictionary
     [compSection setValue:[NSMutableDictionary dictionary]
-                   forKey:[[component definition] valueForKey:@"RRFDSSTTaskName"]];
+                   forKey:[[component definition] valueForKey:@"RRFCRTTaskName"]];
     // create an empty run registry inside
     NSMutableDictionary *curSection=
-    [compSection valueForKey:[[component definition] valueForKey:@"RRFDSSTTaskName"]];
+    [compSection valueForKey:[[component definition] valueForKey:@"RRFCRTTaskName"]];
     [curSection setValue:[NSMutableArray array] forKey:RRFSessionRunKey];
     
     DLog(@"Created entries for all components in registry");
@@ -427,7 +445,7 @@
   }
 }
 
-/** PREFERENCE KEYS */
+#pragma mark Parameters
 NSString * const RRFSessionProtocolKey = @"protocol";
 NSString * const RRFSessionSubjectKey = @"subject";
 NSString * const RRFSessionSessionKey = @"session";
